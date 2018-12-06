@@ -5,12 +5,12 @@ import { orderBy } from 'lodash';
 export default class S3 {
     constructor() {
         AWS.config = new AWS.Config();
-        AWS.config.accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-        AWS.config.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+        AWS.config.accessKeyId = process.env.AMAZON_ACCESS_KEY_ID;
+        AWS.config.secretAccessKey = process.env.AMAZON_SECRET_ACCESS_KEY;
         AWS.config.region = "us-east-1";
         this.client = new AWS.S3({
             apiVersion: '2006-03-01',
-            params: { Bucket: 'ejonasson-baby-photos' }
+            params: { Bucket: process.env.AMAZON_BUCKET_NAME }
         })
     }
 
