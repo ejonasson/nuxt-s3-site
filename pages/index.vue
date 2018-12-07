@@ -5,7 +5,7 @@
         <div
           v-for="image in images"
           :key="image.Key"
-          class="column is-one-third"
+          class="column"
         >
           <gallery-image
             :image-id="image.Key"

@@ -44,7 +44,7 @@ export default {
 <style>
   .galleryImage__wrapper {
     cursor: pointer;
-    width: 100%;
+    width: 250px;
     height: 250px;
     margin-left: 15px;
     margin-bottom: 15px;
