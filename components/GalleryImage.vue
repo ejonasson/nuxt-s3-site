@@ -21,12 +21,16 @@ export default {
     imageUrl: {
       type: String,
       required: true
+    },
+    thumbnailUrl: {
+      type: String,
+      default: ''
     }
   },
   computed: {
     imageStyle() {
       return {
-        backgroundImage: `url(${this.imageUrl})`
+        backgroundImage: this.thumbnailUrl !== '' ? `url(${this.thumbnailUrl})` : `url(${this.imageUrl})`
       }
     }
   },
@@ -41,7 +45,7 @@ export default {
   .galleryImage__wrapper {
     cursor: pointer;
     width: 100%;
-    height: 300px;
+    height: 250px;
     margin-left: 15px;
     margin-bottom: 15px;
   }

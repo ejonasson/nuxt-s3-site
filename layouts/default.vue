@@ -9,6 +9,14 @@
       </div>
     </header>
     <nuxt/>
+    <footer class="footer">
+      <div class="content has-text-centered has-text-grey-light">
+        <p class="is-size-7">
+          You are welcome to download, print, or share these photos with friends or family.<br>
+          However, we ask that these photos not be posted on social media.
+        </p>
+      </div>
+    </footer>
   </div>
 </template>
 

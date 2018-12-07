@@ -8,6 +8,10 @@ export default class S3 {
         AWS.config.accessKeyId = process.env.AMAZON_ACCESS_KEY_ID;
         AWS.config.secretAccessKey = process.env.AMAZON_SECRET_ACCESS_KEY;
         AWS.config.region = "us-east-1";
+        this.thumbnailClient = new AWS.S3({
+            apiVersion: '2006-03-01',
+            params: { Bucket: process.env.AMAZON_BUCKET_NAME + '-thumbnails' }
+        })
         this.client = new AWS.S3({
             apiVersion: '2006-03-01',
             params: { Bucket: process.env.AMAZON_BUCKET_NAME }
@@ -24,7 +28,7 @@ export default class S3 {
 
                 // Add the Public Url
                 let images = data.Contents.map((item) => {
-                    return { publicUrl: this.getPublicUrl(item), ...item }
+                    return { thumbnailUrl: this.getThumbnailUrl(item), publicUrl: this.getPublicUrl(item), ...item }
                 })
 
                 // Sort by Last Modified Date
@@ -39,5 +43,9 @@ export default class S3 {
 
     getPublicUrl(item) {
         return this.client.getSignedUrl('getObject', { Key: item.Key })
+    }
+
+    getThumbnailUrl(item) {
+        return this.thumbnailClient.getSignedUrl('getObject', { Key: item.Key })
     }
 }

@@ -51,14 +51,12 @@ module.exports = {
     '@nuxtjs/dotenv',
     // Doc:https://github.com/nuxt-community/modules/tree/master/packages/bulma
     '@nuxtjs/bulma',
-    'nuxt-robots-module'
+    ['nuxt-robots-module', {
+      /* module options */
+      UserAgent: '*',
+      Disallow: '/',
+    }],
   ],
-
-  'nuxt-robots-module': {
-    /* module options */
-    UserAgent: '*',
-    Disallow: '/',
-  },
   /*
   ** Axios module configuration
   */

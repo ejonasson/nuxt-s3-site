@@ -9,6 +9,7 @@
         >
           <gallery-image
             :image-id="image.Key"
+            :thumbnail-url="image.thumbnailUrl"
             :image-url="image.publicUrl"
           />
         </div>
@@ -39,6 +40,11 @@ export default {
     this.S3 = new S3()
     let images = await this.S3.fetchImages()
     return { images : images }
+  },
+  head () {
+    return {
+      title: 'Zoe Jonasson'
+    }
   },
   methods: {
   }
