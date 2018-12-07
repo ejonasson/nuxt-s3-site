@@ -46,6 +46,7 @@ export default {
     cursor: pointer;
     width: 250px;
     height: 250px;
+    margin: 0 auto;
   }
 
   .galleryImage__image {
