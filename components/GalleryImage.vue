@@ -1,7 +1,7 @@
 <template>
   <div class="galleryImage__wrapper">
     <div
-      :id="imageId"
+      :id="image.Key"
       :style="imageStyle"
       class="galleryImage__image"
       @click.left="makeActive"
@@ -14,28 +14,30 @@ import S3 from '~/services/S3'
 export default {
   name: 'GalleryImage',
   props: {
-    imageId: {
-      type: String,
+    image: {
+      type: Object,
       required: true
-    },
-    imageUrl: {
-      type: String,
-      required: true
-    },
-    thumbnailUrl: {
-      type: String,
-      default: ''
+    }
+  },
+  data () {
+    return {
+      imageUrl: ''
     }
   },
   computed: {
     imageStyle() {
       return {
-        backgroundImage: this.thumbnailUrl !== '' ? `url(${this.thumbnailUrl})` : `url(${this.imageUrl})`
+        backgroundImage: `url(${this.image.thumbnailUrl})`
       }
     }
   },
   methods: {
     makeActive() {
+      if (this.imageUrl === '') {
+        const s3 = new S3()
+        this.imageUrl = s3.getPublicUrl(this.image)
+      }
+
       this.$store.commit('setActiveImage', { imageUrl: this.imageUrl })
     }
   }

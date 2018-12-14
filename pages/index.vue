@@ -8,9 +8,7 @@
           class="column"
         >
           <gallery-image
-            :image-id="image.Key"
-            :thumbnail-url="image.thumbnailUrl"
-            :image-url="image.publicUrl"
+            :image="image"
           />
         </div>
       </div>
@@ -31,22 +29,20 @@ export default {
     'gallery-image': GalleryImage,
     'gallery-hero': GalleryHero
   },
-  data () {
-    return {
-      images: []
-    }
-  },
-  async asyncData ({ params }) {
+  async fetch ({ store, params }) {
     this.S3 = new S3()
     let images = await this.S3.fetchImages()
-    return { images : images }
+    store.commit('setImages', { images })
   },
   head () {
     return {
       title: 'Zoe Jonasson'
     }
   },
-  methods: {
+  computed: {
+    images () {
+      return this.$store.state.images
+    }
   }
 }
 </script>

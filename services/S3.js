@@ -26,9 +26,9 @@ export default class S3 {
                     reject(err)
                 }
 
-                // Add the Public Url
+                // Add the Thumbnail Url
                 let images = data.Contents.map((item) => {
-                    return { thumbnailUrl: this.getThumbnailUrl(item), publicUrl: this.getPublicUrl(item), ...item }
+                    return { thumbnailUrl: this.getThumbnailUrl(item), ...item }
                 })
 
                 // Sort by Last Modified Date

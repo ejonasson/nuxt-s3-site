@@ -3,7 +3,8 @@ import Vuex from 'vuex'
 const createStore = () => {
   return new Vuex.Store({
     state: () => ({
-      activeImage: null
+      activeImage: null,
+      images: []
     }),
     getters: {
       hasActiveImage: state => state.activeImage !== null
@@ -14,7 +15,10 @@ const createStore = () => {
       },
       clearActiveImage (state) {
         state.activeImage = null
-      }
+      },
+      setImages (state, { images }) {
+        state.images = images
+      },
     }
   })
 }
