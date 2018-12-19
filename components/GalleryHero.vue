@@ -3,11 +3,10 @@
     class="GalleryImage__hero"
     @click.left="clearActiveImage"
   >
-    <div
-      :style="imageStyle"
+    <img
+      :src="activeImage"
       class="GalleryImage__heroImage"
-
-    />
+    >
   </div>
 </template>
 <script>
@@ -46,10 +45,7 @@
   }
 
   .GalleryImage__heroImage {
-    width: 80%;
-    height: 80%;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
+    max-width: 80%;
+    max-height: 80%;
   }
 </style>
