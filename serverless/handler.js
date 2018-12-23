@@ -13,9 +13,7 @@ const DEST_BUCKET = 'ejonasson-baby-photos-thumbnails'
 const s3 = new AWS.S3();
 
 module.exports.resize = (event, context, callback) => {
-  console.log(event)
   let srcKey  = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "))
-  console.log(srcKey)
 
     // Infer the image type.
     var typeMatch = srcKey.match(/\.([^.]*)$/)
@@ -33,12 +31,14 @@ module.exports.resize = (event, context, callback) => {
     async.waterfall([
         function download(next) {
             // Download the image from S3 into a buffer.
-            s3.getObject({
+            s3.getObject(
+                {
                     Bucket: SRC_BUCKET,
                     Key: srcKey
                 },
-                next);
-            },
+                next
+            );
+        },
         function transform(response, next) {
             gm(response.Body).size(function(err, size) {
                 // Infer the scaling factor to avoid stretching the image unnaturally.
@@ -89,5 +89,5 @@ module.exports.resize = (event, context, callback) => {
     );
 
   // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
+  callback(null, { message: 'Done!', event });
 };

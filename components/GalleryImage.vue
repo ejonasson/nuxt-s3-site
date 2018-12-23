@@ -9,7 +9,6 @@
   </div>
 </template>
 <script>
-import S3 from '~/services/S3'
 
 export default {
   name: 'GalleryImage',
@@ -33,12 +32,7 @@ export default {
   },
   methods: {
     makeActive() {
-      if (this.imageUrl === '') {
-        const s3 = new S3()
-        this.imageUrl = s3.getPublicUrl(this.image)
-      }
-
-      this.$store.commit('setActiveImage', { imageUrl: this.imageUrl })
+      this.$store.commit('setActiveImage', { image: this.image })
     }
   }
 }

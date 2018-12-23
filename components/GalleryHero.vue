@@ -3,10 +3,20 @@
     class="GalleryImage__hero"
     @click.left="clearActiveImage"
   >
+    <i
+      v-show="!isFirst"
+      class="nav-icon nav-icon--left fa fa-angle-left fa-4x"
+      @click.stop="cycleBack"
+    />
     <img
       :src="activeImage"
       class="GalleryImage__heroImage"
     >
+    <i
+      v-show="!isLast"
+      class="nav-icon nav-icon--right fa fa-angle-right fa-4x"
+      @click.stop="cycleForward"
+    />
   </div>
 </template>
 <script>
@@ -17,14 +27,29 @@
         return this.$store.state.activeImage
       },
       imageStyle() {
-      return {
-        backgroundImage: `url(${this.activeImage})`
+        return {
+          backgroundImage: `url(${this.activeImage})`
+        }
+      },
+      index () {
+        return this.$store.getters.activeImageIndex
+      },
+      isFirst() {
+        return this.index === 0
+      },
+      isLast() {
+        return this.index === ( this.$store.state.images.length - 1)
       }
-    }
     },
     methods: {
       clearActiveImage () {
         this.$store.commit('clearActiveImage')
+      },
+      cycleBack () {
+        this.$store.commit('setActiveImage', { image: this.$store.state.images[this.index - 1] })
+      },
+      cycleForward () {
+        this.$store.commit('setActiveImage', { image: this.$store.state.images[this.index + 1] })
       }
     }
   }
@@ -47,5 +72,18 @@
   .GalleryImage__heroImage {
     max-width: 80%;
     max-height: 80%;
+  }
+
+  .nav-icon {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .nav-icon--left {
+    margin-right: 1rem;
+  }
+
+  .nav-icon--right {
+    margin-left: 1rem;
   }
 </style>
