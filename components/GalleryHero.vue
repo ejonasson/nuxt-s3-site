@@ -77,13 +77,8 @@
   .nav-icon {
     cursor: pointer;
     color: rgba(255, 255, 255, 0.4);
-  }
-
-  .nav-icon--left {
     margin-right: 1rem;
-  }
-
-  .nav-icon--right {
     margin-left: 1rem;
   }
+
 </style>
