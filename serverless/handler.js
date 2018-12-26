@@ -22,8 +22,8 @@ module.exports.resize = (event, context, callback) => {
         return;
     }
     var imageType = typeMatch[1]
-    if (imageType !== "jpg" && imageType !== "png") {
-        callback('Unsupported image type: ${imageType}')
+    if (imageType !== "jpg" && imageType !== "jpeg" && imageType !== "png") {
+        callback(`Unsupported image type: ${imageType}`)
         return;
     }
 
