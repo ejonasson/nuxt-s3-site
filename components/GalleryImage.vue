@@ -45,6 +45,12 @@ export default {
     margin: 0 auto;
   }
 
+  @media only screen and (max-width: 750px) {
+    .galleryImage__wrapper {
+      width: 100%;
+    }
+  }
+
   .galleryImage__image {
     width: 100%;
     height: 100%;
