@@ -58,10 +58,13 @@ export default class S3 {
         return this.thumbnailClient.getSignedUrl('getObject', { Key: item.Key })
     }
 
-    upload(file) {
+    upload(file, callback) {
         const params = {Bucket: process.env.AMAZON_BUCKET_NAME, Key: file.name, Body: file, ACL: 'public-read'}
         this.client.putObject(params, (err, data) => {
-            console.log(err, data);
+            if (err) {
+                console.error(err)
+            }
+            callback(data)
         })
     }
 }

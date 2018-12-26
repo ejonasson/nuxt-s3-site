@@ -35,7 +35,7 @@
           >
           <span class="file-cta">
             <span class="file-label">
-              Choose a file…
+              {{ uploadText }}
             </span>
           </span>
         </label>
@@ -57,12 +57,18 @@ export default {
   data () {
     return {
       awsKey: '',
-      awsSecret: ''
+      awsSecret: '',
+      isUploading: false
     }
   },
   head () {
     return {
       title: 'Upload'
+    }
+  },
+  computed: {
+    uploadText() {
+      return this.isUploading ? 'Uploading...' : 'Select Image'
     }
   },
   mounted () {
@@ -75,10 +81,13 @@ export default {
       window.localStorage.setItem('awsSecret', this.awsSecret)
     },
     upload(e) {
+      this.isUploading = true;
       let file = e.currentTarget.files[0]
       let s3 = new S3()
       s3.reauthorize(this.awsKey, this.awsSecret)
-      s3.upload(file)
+      s3.upload(file, () => {
+        this.isUploading = false
+      })
     }
   }
 }
