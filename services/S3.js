@@ -5,10 +5,6 @@ import { orderBy } from 'lodash';
 export default class S3 {
     constructor() {
         this.reauthorize(process.env.AMAZON_ACCESS_KEY_ID, process.env.AMAZON_SECRET_ACCESS_KEY)
-        this.thumbnailClient = new AWS.S3({
-            apiVersion: '2006-03-01',
-            params: { Bucket: process.env.AMAZON_BUCKET_NAME + '-thumbnails' }
-        })
         this.client = new AWS.S3({
             apiVersion: '2006-03-01',
             params: { Bucket: process.env.AMAZON_BUCKET_NAME }
@@ -55,7 +51,7 @@ export default class S3 {
     }
 
     getThumbnailUrl(item) {
-        return this.thumbnailClient.getSignedUrl('getObject', { Key: item.Key })
+        return `https://${process.env.AMAZON_BUCKET_NAME + '-thumbnails'}.s3.amazonaws.com/${item.Key}`
     }
 
     upload(file, callback) {
