@@ -33,7 +33,10 @@ export default class S3 {
 
                 // Add the Thumbnail Url
                 let images = data.Contents.map((item) => {
-                    return { thumbnailUrl: this.getThumbnailUrl(item), ...item }
+                    return {
+                        thumbnailUrl: this.getThumbnailUrl(item),
+                        id: item.ETag.split('"').join(''), // This tag has quotes around it for some reason, so ditch those
+                        ...item }
                 })
 
                 // Sort by Last Modified Date

@@ -4,7 +4,7 @@
       :id="image.Key"
       :style="imageStyle"
       class="galleryImage__image"
-      @click.left="makeActive"
+      @click="makeActive"
     />
   </div>
 </template>
@@ -32,6 +32,7 @@ export default {
   },
   methods: {
     makeActive() {
+      window.history.pushState('','', `/${this.image.id}`)
       this.$store.commit('setActiveImage', { image: this.image })
     }
   }

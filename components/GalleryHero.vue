@@ -44,12 +44,17 @@
     methods: {
       clearActiveImage () {
         this.$store.commit('clearActiveImage')
+        window.history.pushState('','', `/`)
       },
       cycleBack () {
-        this.$store.commit('setActiveImage', { image: this.$store.state.images[this.index - 1] })
+        const image = this.$store.state.images[this.index - 1]
+        this.$store.commit('setActiveImage', { image })
+        window.history.pushState('','', `/${image.id}`)
       },
       cycleForward () {
-        this.$store.commit('setActiveImage', { image: this.$store.state.images[this.index + 1] })
+        const image = this.$store.state.images[this.index + 1]
+        this.$store.commit('setActiveImage', { image })
+        window.history.pushState('','', `/${image.id}`)
       }
     }
   }

@@ -29,11 +29,18 @@ export default {
     'gallery-image': GalleryImage,
     'gallery-hero': GalleryHero
   },
-  async fetch ({ store, params }) {
+  async fetch ({ store, params, route }) {
     this.S3 = new S3()
     let images = await this.S3.fetchImages()
     store.commit('setImages', { images })
+    if (route.params.imageId) {
+      const activeImage = images.find(i => i.id === route.params.imageId)
+      if (activeImage) {
+        store.commit('setActiveImage', { image: activeImage })
+      }
+    }
   },
+
   head () {
     return {
       title: 'Zoe Jonasson'
