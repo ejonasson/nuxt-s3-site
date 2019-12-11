@@ -1,3 +1,5 @@
+import S3 from './services/S3'
+
 const pkg = require('./package')
 require('dotenv').config()
 
@@ -64,6 +66,16 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+  },
+
+  generate: {
+    async routes () {
+      const aws = new S3()
+      const images = await aws.fetchImages()
+      const ids = images.map(image => image.id)
+      ids.push('/')
+      return ids
+    }
   },
 
   /*
