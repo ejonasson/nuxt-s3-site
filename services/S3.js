@@ -50,7 +50,7 @@ export default class S3 {
     }
 
     getPublicUrl(item) {
-        return this.client.getSignedUrl('getObject', { Key: item.Key })
+        return `https://${process.env.AMAZON_BUCKET_NAME}.s3.amazonaws.com/${item.Key}`
     }
 
     getThumbnailUrl(item) {
