@@ -46,6 +46,7 @@
 
 <script>
 import S3 from '~/services/S3'
+import DynamoDB from '~/services/DynamoDB'
 import GalleryImage from '~/components/GalleryImage.vue'
 import GalleryHero from '~/components/GalleryHero.vue'
 
@@ -84,10 +85,11 @@ export default {
       this.isUploading = true;
       let file = e.currentTarget.files[0]
       let s3 = new S3()
-      s3.reauthorize(this.awsKey, this.awsSecret)
       s3.upload(file, () => {
         this.isUploading = false
       })
+      let dynamoDB = new DynamoDB()
+      dynamoDB.saveFileData(file)
     }
   }
 }

@@ -13,20 +13,24 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.8.0",
-    "@nuxtjs/bulma": "^1.2.6",
+    "@nuxtjs/axios": "^5.10.3",
+    "@nuxtjs/bulma": "^1.2.7",
     "@nuxtjs/dotenv": "^1.4.1",
     "async": "^2.6.3",
-    "aws-sdk": "^2.588.0",
+    "aws-sdk": "^2.668.0",
     "cross-env": "^5.2.1",
+    "exifr": "^5.0.1",
     "fs": "0.0.1-security",
     "gm": "^1.23.1",
+    "jpg-stream": "^1.1.2",
     "lodash": "^4.17.15",
-    "moment": "^2.24.0",
-    "nuxt": "^2.10.2",
+    "moment": "^2.25.1",
+    "nuxt": "^2.12.2",
     "nuxt-robots-module": "^1.5.1",
     "nuxt-svg": "^0.1.6",
-    "vue-template-compiler": "^2.6.10"
+    "read-exif": "^1.0.0",
+    "vue": "^2.6.11",
+    "vue-template-compiler": "^2.6.11"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
