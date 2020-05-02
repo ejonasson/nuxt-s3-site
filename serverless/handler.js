@@ -4,13 +4,17 @@ const async = require('async');
 const AWS = require('aws-sdk');
 const gm = require('gm')
             .subClass({ imageMagick: true }); // Enable ImageMagick integration.
-// constants
+import exifr from 'exifr'
+
+            // constants
 const MAX_WIDTH  = 250;
 const MAX_HEIGHT = 250;
 const SRC_BUCKET = 'ejonasson-baby-photos'
 const DEST_BUCKET = 'ejonasson-baby-photos-thumbnails'
+const IMAGES_TABLE = 'zoe_images'
 
 const s3 = new AWS.S3();
+const dynamoDB = new AWS.DynamoDB();
 
 module.exports.resize = (event, context, callback) => {
   let srcKey  = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "))
@@ -91,3 +95,64 @@ module.exports.resize = (event, context, callback) => {
   // Use this code if you don't use the http event with the LAMBDA-PROXY integration
   callback(null, { message: 'Done!', event });
 };
+
+module.exports.storeExif = (event, context, callback) => {
+    let srcKey = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "))
+
+    // Infer the image type.
+    var typeMatch = srcKey.match(/\.([^.]*)$/)
+    if (!typeMatch) {
+        callback("Could not determine the image type.")
+        return;
+    }
+    var imageType = typeMatch[1]
+    if (imageType !== "jpg" && imageType !== "jpeg") {
+        callback(`Unsupported image type: ${imageType}`)
+        return;
+    }
+
+    // Download the image from S3, transform, and upload to a different S3 bucket.
+    async.waterfall([
+        function download(next) {
+            // Download the image from S3 into a buffer.
+            s3.getObject(
+                {
+                    Bucket: SRC_BUCKET,
+                    Key: srcKey
+                },
+                next
+            );
+        },
+        function storeMetadata(response, next) {
+            exifr.parse(response.Body).then((output) => {
+                const timestamp = moment(output.CreateDate) || moment(response.LastModified)
+                const params = {
+                    TableName: IMAGES_TABLE,
+                    Item: {
+                        "imageId": {
+                            S: srcKey
+                        },
+                        "timestamp": {
+                            N: timestamp.unix().toString()
+                        }
+                    }
+                }
+                dynamoDB.putItem(params, next);
+            })
+        }
+    ], function (err) {
+        if (err) {
+            console.error(
+                'Unable to store Metadata'
+            )
+        } else {
+            console.log(
+                'Successfully stored Metadata'
+            )
+        }
+        callback(null, "message")
+    }
+    );
+
+    // Use this code if you don't use the http event with the LAMBDA-PROXY integration
+    callback(null, { message: 'Done!', event });
