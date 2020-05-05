@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk';
 import moment from 'moment';
 import { orderBy } from 'lodash';
+import exifr from 'exifr'
 
 export default class S3 {
     constructor() {
@@ -32,19 +33,26 @@ export default class S3 {
                 }
 
                 // Add the Thumbnail Url
-                let images = data.Contents.map((item) => {
-                    return {
-                        thumbnailUrl: this.getThumbnailUrl(item),
-                        id: item.ETag.split('"').join(''), // This tag has quotes around it for some reason, so ditch those
-                        ...item }
+                let imagePromises = data.Contents.map(async (item) => {
+                    return this.client.getObject({ Key: item.Key })
+                        .promise().then(async (data) => {
+                            const fileData = await exifr.parse(data.Body)
+                            const timestamp = fileData && fileData.CreateDate ? moment(fileData.CreateDate)
+                                : moment(item.LastModified)
+                            return {
+                                thumbnailUrl: this.getThumbnailUrl(item),
+                                id: item.ETag.split('"').join(''), // This tag has quotes around it for some reason, so ditch those
+                                timestamp: timestamp.unix(),
+                                ...item,
+                                ...fileData
+                            }
+                        })
                 })
 
                 // Sort by Last Modified Date
-                let sortedImages = orderBy(images, (image) => {
-                    return moment(image.LastModified).valueOf()
-                }, 'desc')
-
-                resolve(sortedImages)
+                Promise.all(imagePromises).then((images) => {
+                    resolve(orderBy(images, (image) => image.timestamp, 'desc'))
+                })
             })
         })
     }

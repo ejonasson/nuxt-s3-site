@@ -1,5 +1,5 @@
 {
-  "name": "serverless",
+  "name": "zoe_photo_processing",
   "version": "1.0.0",
   "description": "",
   "main": "handler.js",
