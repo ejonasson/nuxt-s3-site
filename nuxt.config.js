@@ -74,7 +74,12 @@ module.exports = {
       const images = await aws.fetchImages()
       const ids = images.map(image => image.id)
       ids.push('/')
-      return ids
+      return ids.map((id) => {
+        return {
+          route: id,
+          payload: images
+        }
+      })
     }
   },
 

@@ -43,8 +43,7 @@ export default class S3 {
                                 thumbnailUrl: this.getThumbnailUrl(item),
                                 id: item.ETag.split('"').join(''), // This tag has quotes around it for some reason, so ditch those
                                 timestamp: timestamp.unix(),
-                                ...item,
-                                ...fileData
+                                ...item
                             }
                         })
                 })

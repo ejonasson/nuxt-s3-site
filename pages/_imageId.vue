@@ -1,5 +1,24 @@
 <template>
   <section class="section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column button-column is-narrow">
+          <a
+            class="button"
+            href="/"
+            disabled
+          >
+            Pictures
+          </a>
+          <a
+            class="button"
+            href="/videos"
+          >
+            Videos
+          </a>
+        </div>
+      </div>
+    </div>
     <div class="galleryContainer container">
       <div class="columns full-width">
         <div
@@ -29,14 +48,31 @@ export default {
     'gallery-image': GalleryImage,
     'gallery-hero': GalleryHero
   },
-  async fetch ({ store, params, route }) {
-    this.S3 = new S3()
-    let images = await this.S3.fetchImages()
-    store.commit('setImages', { images })
-    if (route.params.imageId) {
-      const activeImage = images.find(i => i.id === route.params.imageId)
+
+  async asyncData ({ params, error, payload }) {
+    if (!payload) {
+      const aws = new S3()
+      let data = await aws.fetchImages()
+      return {
+        imageData: data
+      }
+    }
+    return {
+      imageData: payload
+    }
+  },
+  computed: {
+    images () {
+      return this.imageData
+    }
+  },
+
+  beforeMount() {
+    this.$store.commit('setImages', { images: this.imageData })
+    if (this.$route.params.imageId) {
+      const activeImage = images.find(i => i.id === this.$route.params.imageId)
       if (activeImage) {
-        store.commit('setActiveImage', { image: activeImage })
+        this.$store.commit('setActiveImage', { image: activeImage })
       }
     }
   },
@@ -46,11 +82,6 @@ export default {
       title: 'Zoe Jonasson'
     }
   },
-  computed: {
-    images () {
-      return this.$store.state.images
-    }
-  }
 }
 </script>
 
@@ -62,5 +93,9 @@ export default {
   .full-width {
     width: 100%;
     flex-wrap: wrap;
+  }
+
+  .button-column {
+    margin-bottom: 20px;
   }
 </style>
