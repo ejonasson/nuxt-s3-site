@@ -17,7 +17,7 @@
     "@nuxtjs/bulma": "^1.2.7",
     "@nuxtjs/dotenv": "^1.4.1",
     "async": "^2.6.3",
-    "aws-sdk": "^2.668.0",
+    "aws-sdk": "^2.814.0",
     "cross-env": "^5.2.1",
     "exifr": "^5.0.1",
     "fs": "0.0.1-security",
