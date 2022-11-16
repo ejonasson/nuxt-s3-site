@@ -25,7 +25,7 @@
     "jpg-stream": "^1.1.2",
     "lodash": "^4.17.15",
     "moment": "^2.25.1",
-    "nuxt": "^2.12.2",
+    "nuxt": "^2.15.8",
     "nuxt-robots-module": "^1.5.1",
     "nuxt-svg": "^0.1.6",
     "read-exif": "^1.0.0",
